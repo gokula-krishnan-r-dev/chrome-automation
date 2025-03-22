@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Use</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 350px;
+      padding: 15px;
+      margin: 0;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-top: 0;
+      color: #4285F4;
+      text-align: center;
+    }
+
+    .settings-section,
+    .command-section {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea {
+      width: calc(100% - 10px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 80px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    button:hover {
+      background-color: #3367D6;
+    }
+
+    .status-message {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    .error {
+      color: #D32F2F;
+    }
+
+    .success {
+      color: #388E3C;
+    }
+
+    .result-section {
+      margin-top: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Browser Use with Claude</h1>
+
+  <div class="settings-section">
+    <label for="api-key">Claude API Key</label>
+    <input type="text" id="api-key" placeholder="sk-ant-api03-...">
+    <button id="save-api-key">Save API Key</button>
+    <div id="api-key-status" class="status-message"></div>
+  </div>
+
+  <div class="navigation-section">
+    <button id="navigate-demo">Go to Demo Page</button>
+  </div>
+
+  <script>
+    document.getElementById('navigate-demo').addEventListener('click', function () {
+      chrome.tabs.create({ url: 'demo.html' });
+    });
+  </script>
+
+  <div class="command-section">
+    <label for="command">Enter Command for Claude</label>
+    <textarea id="command" placeholder="Example: Find the search box and type 'Claude AI'"></textarea>
+    <button id="execute-command">Execute Command</button>
+    <div id="command-status" class="status-message"></div>
+  </div>
+
+  <div id="result-section" class="result-section hidden">
+    <h3>Command Result</h3>
+    <pre id="result-content"></pre>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

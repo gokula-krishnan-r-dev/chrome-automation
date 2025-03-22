@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Automation Demo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      color: #4285F4;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .instructions {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      display: flex;
+      margin-bottom: 30px;
+    }
+
+    .control-panel {
+      width: 40%;
+      padding: 15px;
+      background-color: #e3f2fd;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .result-panel {
+      flex: 1;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      overflow: auto;
+      min-height: 400px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #3367D6;
+    }
+
+    pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      overflow: auto;
+    }
+
+    .sample-commands {
+      margin-top: 20px;
+      background-color: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .sample-commands h3 {
+      margin-top: 0;
+    }
+
+    .sample-command {
+      margin-bottom: 10px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    .sample-command:hover {
+      background-color: #e0e0e0;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Browser Automation Demo with AI-Assisted Recovery</h1>
+
+  <div class="instructions">
+    <p>This demo shows how the automation library handles failures and automatically retries with different strategies.
+      Since this is running in a standalone page (outside the extension), it uses mock implementations to simulate the
+      automation flow.</p>
+    <p>Enter a command below or choose one of the sample commands, then click "Run Demo" to see how the library would
+      execute it with automatic recovery.</p>
+  </div>
+
+  <div class="panel">
+    <div class="control-panel">
+      <h2>Command Input</h2>
+      <textarea id="command-input"
+        placeholder="Enter a browser automation command...">Go to priceline.com and search for flights from Las Vegas to San Francisco for next weekend</textarea>
+      <button id="run-demo">Run Demo</button>
+
+      <div class="sample-commands">
+        <h3>Sample Commands</h3>
+        <div class="sample-command" data-command="Go to amazon.com and search for wireless headphones">Go to amazon.com
+          and search for wireless headphones</div>
+        <div class="sample-command" data-command="Go to weather.com and check the forecast for New York">Go to
+          weather.com and check the forecast for New York</div>
+        <div class="sample-command" data-command="Navigate to gmail.com and click on the compose button">Navigate to
+          gmail.com and click on the compose button</div>
+        <div class="sample-command" data-command="Go to twitter.com and search for #AI news">Go to twitter.com and
+          search for #AI news</div>
+      </div>
+    </div>
+
+    <div class="result-panel" id="result-container">
+      <h2>Execution Results</h2>
+      <p>The automation results will appear here after you run the demo.</p>
+    </div>
+  </div>
+
+  <!-- Include the automation library -->
+  <script src="automation-lib.js"></script>
+  <script src="demo.js"></script>
+
+  <script>
+    // Wire up the UI elements
+    document.addEventListener('DOMContentLoaded', function () {
+      const commandInput = document.getElementById('command-input');
+      const runButton = document.getElementById('run-demo');
+      const resultContainer = document.getElementById('result-container');
+
+      // Handle the run button click
+      runButton.addEventListener('click', function () {
+        const command = commandInput.value.trim();
+        if (!command) {
+          alert('Please enter a command first');
+          return;
+        }
+
+        // Clear previous results
+        resultContainer.innerHTML = '<h2>Execution Results</h2>';
+
+        // Override the test command
+        window.testCommand = command;
+
+        // Create a container for this run
+        const runContainer = document.createElement('div');
+        resultContainer.appendChild(runContainer);
+
+        // Override the mock container
+        window.mockContainer = runContainer;
+
+        // Run the demo
+        runDemo();
+      });
+
+      // Handle sample command clicks
+      const sampleCommands = document.querySelectorAll('.sample-command');
+      sampleCommands.forEach(sample => {
+        sample.addEventListener('click', function () {
+          commandInput.value = this.getAttribute('data-command');
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
